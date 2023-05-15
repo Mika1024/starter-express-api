@@ -55,4 +55,3 @@ app.listen(3001, (err) => {
     }
     console.log("OK")
 })
-export const api = functions.https.onRequest(app)

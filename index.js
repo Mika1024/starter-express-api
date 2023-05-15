@@ -30,7 +30,7 @@ const password = 'favouritemouse'
 const url = 'mongodb+srv://foreducation:' + password + '@foredu.fyunlt3.mongodb.net/blog?retryWrites=true&w=majority'
 
 mongoose.set('strictQuery', true);
-
+console.log("hello")
 mongoose
     .connect(url, { useNewUrlParser: true })
     .then(() => console.log('OK DB'))
@@ -49,7 +49,7 @@ app.get('/posts/id/:id', module.idPosts)
 
 app.post('/auth/login', module.login)
 
-app.listen(3000, (err) => {
+app.listen(3001, (err) => {
     if (err) {
         console.log(err)
     }

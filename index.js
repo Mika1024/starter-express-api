@@ -49,7 +49,7 @@ app.get('/posts/id/:id', module.idPosts)
 
 app.post('/auth/login', module.login)
 
-app.listen(3001, (err) => {
+app.listen(process.env.PORT||3000, (err) => {
     if (err) {
         console.log(err)
     }

@@ -3,12 +3,7 @@
   "type": "module",
   "description": "Cloud Functions for Firebase",
   "scripts": {
-    "serve": "firebase emulators:start --only functions",
-    "shell": "firebase functions:shell",
-    "start": "npm run shell",
-    "startdev": "nodemon index.js",
-    "deploy": "firebase deploy --only functions",
-    "logs": "firebase functions:log"
+    "start": "nodemon index.js"
   },
   "engines": {
     "node": "18"
@@ -24,9 +19,6 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.8.3",
     "nodemon": "^2.0.20"
-  },
-  "devDependencies": {
-    "firebase-functions-test": "^3.1.0"
   },
   "private": true
 }

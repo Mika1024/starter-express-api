@@ -3,7 +3,7 @@
   "type": "module",
   "description": "Cloud Functions for Firebase",
   "scripts": {
-    "start": "npm run index.js"
+    "start": "npm run"
   },
   "engines": {
     "node": "18"

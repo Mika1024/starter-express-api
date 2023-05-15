@@ -55,3 +55,5 @@ app.listen(process.env.PORT||3000, (err) => {
     }
     console.log("OK")
 })
+const api = () => functions.https.onRequest(app)
+api()

@@ -1,4 +1,3 @@
-import { validationResult } from 'express-validator'
 import user from './user.js'
 import post from './sells.js'
 import jwt from 'jsonwebtoken'
@@ -8,27 +7,45 @@ export const login = async ( req, res ) => {
     try {
      const profile = await user.findOne({email: req.body.email});
      if (!profile) {
-        return res.status(404).json({
-            message: 'Not registration people'
+        return res.status(401).json({
+            code: 401
         })
     }
-    const availible = bcrypt.compare(req.body.password, profile._doc_passwordHash);
+    const availible = await bcrypt.compare(req.body.password, profile.passwordHash);
     if (!availible) {
-        return res.status(404).json({
-            message: 'Not registration people'
+        return res.status(401).json({
+            code: 401
         })
     }
-    const token = jwt.sign(
-        {
-            _id: profile._id
-        },
-        'secretkey1024',
-        {
-            expiresIn:'30d'
-        }
-    )
+    const decoded = jwt.verify(req.body.code, "wellfinesecretkeyforpoststogether")
+    if(decoded.code != "wellfine.reboot.technology.org"){
+        return res.status(401).json({
+            code: 401
+        })
+    }
     res.json({
-        token 
+        code: 200 
+    })
+    } catch (err) {
+        console.log(err)
+        res.status(401).json({
+            code: 401
+        })
+    }
+}
+export const reg = async ( req, res ) => {
+    try {
+        const salt = await bcrypt.genSalt(14);
+        const password = await bcrypt.hash(req.body.password, salt)
+        const doc = new user({
+            fullName: req.body.fullName,
+            email: req.body.email,
+            number: req.body.fullName,
+            passwordHash: password,
+        })
+        const newUser = await doc.save()
+    res.json({
+        ...newUser 
     })
     } catch (err) {
         console.log(err)
@@ -39,17 +56,6 @@ export const login = async ( req, res ) => {
 }
 export const createPosts = async (req, res) => {
     try {
-        console.log(req.userId)
-        const profile = await user.findById(req.userId)
-        if (!profile) {
-            return res.status(404).json({
-                message: 'User not registration'
-            })
-        }
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json(errors.array())
-        }
         const doc = new post({
             name: req.body.name,
             text: req.body.text,
@@ -57,19 +63,6 @@ export const createPosts = async (req, res) => {
         })
 
         const postCtr = await doc.save();
-
-        user.findByIdAndUpdate(
-            { _id: req.userId },
-            { $addToSet: { sellList: postCtr._doc._id.toString() } },
-            (err, result) => {
-                if (err) {
-                    console.log(err)
-                }
-                else {
-                    console.log(result)
-                }
-            }
-        )
 
         res.json({
             ...postCtr._doc
@@ -150,4 +143,18 @@ export const idPosts = async (req, res) => {
             message: 'Server error',
         })
     }
+}
+export const search = async (req,res)=>{
+try{    
+    const textId = req.params.text
+    let search = await post.find({name:  { "$regex": textId, "$options": "i" }}).sort({ countSee: -1 }).exec()
+    res.status(200).json({
+        ...search
+    })
+}catch (err) {
+    console.log(err)
+    res.status(500).json({
+        message: 'Server error',
+    })
+}
 }

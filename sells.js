@@ -5,9 +5,9 @@ const post = new mongoose.Schema({
         type: String
     },
     text: {
-        type: Array
+        type: String
     },
-    countSee: {
+    countSee: { 
         type: Number, required: true
     }
 },

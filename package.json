@@ -1,12 +1,14 @@
 {
-  "name": "wellfine",
+  "name": "functions",
   "type": "module",
-  "description": "nothing",
-    "scripts": {
-    "start": "node index.js" 
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
   "engines": {
     "node": "18"

@@ -97,11 +97,16 @@ export const allPosts = async (req, res) => {
 }
 export const topPosts = async (req, res) => {
     try {
-
+        function getPoststTop(posts){
+            return posts.map(
+             ({_id, name, countSee, createdAt }) => ({ _id, name, countSee, createdAt })
+          );
+        }
         const topPosts = await post.find().sort({ countSee: -1 }).limit(3).exec()
 
+        let postSortListTop = getPoststTop(topPosts)
         res.send({
-            ...topPosts
+            ...postSortListTop,
         })
     }
     catch (err) {

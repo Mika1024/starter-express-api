@@ -76,10 +76,16 @@ export const createPosts = async (req, res) => {
 }
 export const allPosts = async (req, res) => {
     try {
-        
+        function getPosts(posts){
+            return posts.map(
+             ({_id, name, countSee, createdAt }) => ({ _id, name, countSee, createdAt })
+          );
+        }
         const postList = await post.find().sort({countSee: -1}).skip((req.params.list - 1) * 12).limit(12).exec()
+        
+        let postSortList = getPosts(postList)
         res.send({
-            ...postList,
+            ...postSortList,
         })
     }
     catch (err) {

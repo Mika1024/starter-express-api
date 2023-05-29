@@ -3,7 +3,7 @@
   "type": "module",
   "description": "Cloud Functions for Firebase",
     "scripts": {
-    "start": "react-scripts start",
+    "start": "node index.js" 
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
